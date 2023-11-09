@@ -1,15 +1,21 @@
-const sqlite3 = require('sqlite3').verbose()
+const { Sequelize } = require('sequelize');
 
-const DBSOURCE = "./src/db/db.sqlite"
-
-let db = new sqlite3.Database(DBSOURCE, (err) => {
-    if (err) {
-      // Cannot open database
-      console.error(err.message)
-      throw err
-    }else{
-        console.log('Connected to the SQLite database.')
-    }
+const db = new Sequelize({
+  dialect: 'sqlite',
+  storage: `${__dirname}/db.sqlite`,
+  define: {
+    timestamps: false, // Disable timestamps globally
+  },
 });
+
+dbConnect = async () => {
+  try {
+    await db.authenticate();
+    await db.sync(); 
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+}
 
 module.exports = db
