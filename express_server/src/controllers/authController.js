@@ -48,6 +48,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     });
 
     createSendToken(newUser, 201, req, res);
+    //User.destroy({where:{}})
   });
 
 

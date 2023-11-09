@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, UniqueConstraintError } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
 const db = require('../db/database')
@@ -12,12 +12,21 @@ const User = db.define('user', {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: {
+        args:true,
+        msg: 'username already in use!'
+    }
+
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        isEmail: {
+          msg: "Invalid email address"
+        }
+      }
     },
     password: {
       type: DataTypes.STRING,
@@ -33,7 +42,8 @@ User.beforeCreate(async(user, options) => {
   user.password = hashedPassword;
 });
 
-User.addHook
+
+
 
 module.exports = User;
   

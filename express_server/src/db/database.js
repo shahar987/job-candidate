@@ -18,4 +18,6 @@ dbConnect = async () => {
   }
 }
 
+dbConnect()
+
 module.exports = db
