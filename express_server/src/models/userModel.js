@@ -12,6 +12,7 @@ const User = db.define('user', {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true
     },
     email: {
       type: DataTypes.STRING,
@@ -31,6 +32,8 @@ User.beforeCreate(async(user, options) => {
   const hashedPassword = await bcrypt.hash(user.password, 12);
   user.password = hashedPassword;
 });
+
+User.addHook
 
 module.exports = User;
   

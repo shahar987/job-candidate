@@ -4,7 +4,7 @@ const db = new Sequelize({
   dialect: 'sqlite',
   storage: `${__dirname}/db.sqlite`,
   define: {
-    timestamps: false, // Disable timestamps globally
+    timestamps: false,
   },
 });
 
