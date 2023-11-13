@@ -1,5 +1,7 @@
 require('dotenv').config()
 const express = require("express");
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const AppError = require("./src/utils/appError")
 const authRouter = require("./src/routers/authRouter");
@@ -9,11 +11,16 @@ const globalErrorHandler = require('./src/controllers/errorController');
 const app = express();
 const bodyParser = require('body-parser');
 
-app.use(bodyParser.json()) // for parsing application/json
+app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // set port, listen for requests
 const PORT = 8080;
+
+app.use(cors({
+  origin: true,
+  credentials: true,
+}));
 
 
 app.use('/api/auth', authRouter);
@@ -23,6 +30,9 @@ app.all('*', (req, res, next) => {
   });
 
 app.use(globalErrorHandler);
+
+app.use(cookieParser());
+
 
 
 app.listen(PORT, () => {

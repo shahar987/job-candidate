@@ -1,6 +1,18 @@
 const Candidate = require("../models/candidateModel");
+const AppError = require("../utils/appError");
 const catchAsync = require('../utils/catchAsync');
 const pagination = require('../utils/pagination')
+
+exports.getCandidate = catchAsync(async (req, res, next) => {
+    const candidateId = req.params.id
+    const candidate = await Candidate.findByPk(candidateId)
+
+    if(!candidate){
+        return next(new AppError('candidate does not exist', 404));
+    }
+    
+    res.status(200).json({success: true, candidate})
+})
 
 
 exports.getAllCandidates = catchAsync(async (req, res, next) => {
@@ -16,7 +28,7 @@ exports.getAllCandidates = catchAsync(async (req, res, next) => {
     const totalCandidates = candidates.count;
     const totalPages = Math.ceil(totalCandidates / limit);
     url = 'http://localhost:8080/api/candidates'
-
+    
     res.status(200).json({
         success: true,
         candidates: candidates.rows,
@@ -25,4 +37,5 @@ exports.getAllCandidates = catchAsync(async (req, res, next) => {
         prevPage: pagination.getPrevPage(page, limit, url),
         totalPages: totalPages,
     });
+    
   });

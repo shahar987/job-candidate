@@ -19,12 +19,12 @@ const signToken = id => {
 //send the token in a cookie so the browser be abele to store it
 const createSendToken = (user, statusCode, req, res) => {
     const token = signToken(user.id);
+    res.header('Access-Control-Allow-Credentials', true);
     res.cookie('jwt', token, {
       expires: new Date(
-        Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+        Date.now() + 30 * 24 * 60 * 60 * 1000
       ),
       httpOnly: true,
-      secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
     });
   
     res.status(statusCode).json({
@@ -62,7 +62,7 @@ exports.signin = catchAsync(async (req, res, next) => {
     }
     //Check if user exists
     const user = await User.findOne({ where: { username: username } });
-
+    console.log(username)
     //Check if password is correct
     if (!user || !(await correctPassword(password, user.password))) {
       return next(new AppError('Incorrect username or password', 401));
@@ -73,19 +73,17 @@ exports.signin = catchAsync(async (req, res, next) => {
 
 //prevent access if user not authorized
 exports.protect = catchAsync(async (req, res, next) => {
-
   let token;
-  //get token from bearer jwt
-  if (
+  if (req.cookies) {
+    console.log(`req cookie: ${req.cookie}`)
+    token = req.cookies['jwt'];
+  } else if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
 
-    //get token from browser cookie
-  } else if (req.cookies.jwt) {
-    token = req.cookies.jwt;
-  }
+  } 
 
   if (!token) {
     return next(

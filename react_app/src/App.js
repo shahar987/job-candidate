@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
-function App() {
+import CandidateProfile from './pages/candidateProfile/candidateProfile';
+import Home from './pages/home/home';
+import SignIn from './pages/signin/signIn';
+import SignUp from './pages/signup';
+
+const  App =() => {
+  const isLoggedIn = Cookies.get('token')
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+          <Route path="/" element={isLoggedIn ? <Home/> : <Navigate to='/signin'/>}/>
+          <Route path="/candidates/:id" element={isLoggedIn ? <CandidateProfile/> : <Navigate to='/signin'/>}/>
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
+

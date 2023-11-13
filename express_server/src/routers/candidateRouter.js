@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.use(authController.protect);
 
+router.get('/:id', candidateController.getCandidate);
 router.get('/', candidateController.getAllCandidates);
 
 module.exports = router;

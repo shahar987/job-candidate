@@ -1,0 +1,49 @@
+
+.profileCard{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    width: 60vw;
+    background-color: white;
+}
+
+.profileCard p {
+    margin: 0;
+}
+
+.title{
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 40px;
+
+}
+
+.title-info{
+    display: flex;
+    flex-direction: column;
+}
+
+.title-info p{
+    margin: 20px 0;
+}
+
+.avatar{
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    border-color: transparent;
+    background-color: white;
+    box-shadow: 1px 1px 10px #C2D9FF;
+
+}
+
+.line{
+    border-top: 2px solid #a9a9a94d;
+    width: 95%;
+    margin: 15px 0;
+}
+
+.section-title{
+    color: #7752FE;
+}
