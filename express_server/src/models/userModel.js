@@ -12,10 +12,7 @@ const User = db.define('user', {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: {
-        args:true,
-        msg: 'username already in use!'
-    }
+      unique: true
 
     },
     email: {
@@ -35,6 +32,7 @@ const User = db.define('user', {
   }, {
     tableName: 'user',
   });
+
   
 //encrypt the password before save
 User.beforeCreate(async(user, options) => {

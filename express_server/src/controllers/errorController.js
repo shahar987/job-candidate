@@ -2,8 +2,8 @@ const AppError = require('./../utils/appError');
 
 
 const handleDuplicateFieldsDB = err => {
-  const value = err.errors[0].value
-  const message = `Duplicate field value: ${value}. Please use another value!`;
+  const value = err.errors[0].path
+  const message = `This ${value} elready exist`;
   return new AppError(message, 400);
 };
 
@@ -11,30 +11,23 @@ const handleValidationErrorDB = () => {
   return new AppError('Invalid input data.', 400);
 };
 
-const handleJWTError = () =>
+const handleJWTError = () => {
   new AppError('Invalid token. Please log in again!', 401);
+}
 
-const handleJWTExpiredError = () =>
+const handleJWTExpiredError = () => {
   new AppError('Your token has expired! Please log in again.', 401);
+}
+  
 
 //send errors functions
 const sendErrorDev = (err, req, res) => {
-  
-  if (req.originalUrl.startsWith('/api')) {
     return res.status(err.statusCode).json({
       status: err.status,
       error: err,
       message: err.message,
       stack: err.stack
     });
-  }
-
-  //RENDERED WEBSITE
-  console.error('ERROR', err);
-  return res.status(err.statusCode).render('error', {
-    title: 'Something went wrong!',
-    msg: err.message
-  });
 };
 
 const sendErrorProd = (err, req, res) => {

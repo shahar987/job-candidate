@@ -33,6 +33,7 @@ const createSendToken = (user, statusCode, req, res) => {
     });
   };
 
+
 //compare password in the database vs password user provide and check if they match
 const correctPassword = async(userPassword, dbPassword) =>{
   return await bcrypt.compare(userPassword, dbPassword); 
@@ -48,7 +49,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     });
 
     createSendToken(newUser, 201, req, res);
-    //User.destroy({where:{}})
   });
 
 
@@ -56,14 +56,13 @@ exports.signup = catchAsync(async (req, res, next) => {
 exports.signin = catchAsync(async (req, res, next) => {
     const { username, password } = req.body;
   
-    //Check if email and password exist
+    //check if email and password exist
     if (!username || !password) {
       return next(new AppError('Please provide username and password!', 400));
     }
-    //Check if user exists
+    //check if user exists
     const user = await User.findOne({ where: { username: username } });
-    console.log(username)
-    //Check if password is correct
+    //check if password is correct
     if (!user || !(await correctPassword(password, user.password))) {
       return next(new AppError('Incorrect username or password', 401));
     }
@@ -75,7 +74,6 @@ exports.signin = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
   if (req.cookies) {
-    console.log(`req cookie: ${req.cookie}`)
     token = req.cookies['jwt'];
   } else if (
     req.headers.authorization &&
@@ -91,10 +89,10 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
   
-  //Verification token
+  //verification token
   const decoded = await util.promisify(jwt.verify)(token, process.env.JWT_SECRET);
   
-  //Check if user still exists
+  //check if user still exists
   const currentUser = await User.findByPk(decoded.id);
   if (!currentUser) {
     return next(
@@ -105,9 +103,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
   
-  //Can access protected route
-  req.user = currentUser;
-  res.locals.user = currentUser;
   next();
 });
 

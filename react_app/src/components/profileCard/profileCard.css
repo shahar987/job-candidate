@@ -15,15 +15,6 @@
     margin: 20px 0;
 }
 
-.avatar1{
-    width: 20rem;
-    height: 20rem;
-    border-radius: 50%;
-    border-color: transparent;
-    background-color: white;
-    box-shadow: 1px 1px 10px #C2D9FF;
-
-}
 
 .line{
     border-top: 2px solid #a9a9a94d;
@@ -33,4 +24,8 @@
 
 .section-title{
     color: #7752FE;
+}
+
+.row{
+    display: flex;
 }

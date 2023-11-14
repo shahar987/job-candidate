@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,8 +11,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/auth';
 
 
 
@@ -20,7 +20,8 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
     const navigate = useNavigate()
-    const [loginError, setLoginError] = React.useState("")
+    const {login} = useAuth();
+    const [loginError, setLoginError] = useState("")
 
     const signIn = async (username, password) => {
         try {
@@ -28,7 +29,10 @@ export default function SignIn() {
                 username,
                 password,
             },{withCredentials:true});
-            Cookies.set('token', response.data.token);
+            /*Cookies.set('token', response.data.token);
+            console.log(Cookies.get('token'))
+            navigate('/');*/
+            login(response.data['token'])
             navigate('/');
         
         } catch (error) {
@@ -96,11 +100,6 @@ export default function SignIn() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
                 <Link href="/signup" >
                   {"Don't have an account? Sign Up"}

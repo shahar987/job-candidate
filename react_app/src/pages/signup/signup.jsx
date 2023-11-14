@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,15 +11,16 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/auth';
 
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+    const {login} = useAuth();
     const navigate = useNavigate()
-    const [signUpError, setSignupError] = React.useState("") 
+    const [signUpError, setSignupError] = useState("") 
 
     const signUp = async (email, username, password) => {
         try {
@@ -28,14 +29,16 @@ export default function SignUp() {
             username,
             password,
           },{withCredentials:true});
-      
-          Cookies.set('token', response.data.token);
-          navigate('/');
+
+          login(response.data['token'])
+          navigate('/')
+          
         } catch (error) {
           console.error('Signup error:', error);
           setSignupError(error.response.data['message'])
         }
       };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

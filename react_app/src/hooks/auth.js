@@ -1,13 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import Cookies from 'js-cookie';
 
-export const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+const useAuth = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token'); 
-    setIsAuthenticated(!!token);
-    if(!!token) console.log("yes")
-  }, [isAuthenticated]);
+    const token = Cookies.get('token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
-  return isAuthenticated;
+  const login = useCallback((token) => {
+    Cookies.set('token', token);
+    setIsLoggedIn(true);
+  }, []);
+
+  const logout = useCallback(() => {
+    Cookies.remove('token');
+    setIsLoggedIn(false);
+  }, []);
+
+  return { isLoggedIn, login, logout };
 };
+
+export default useAuth;

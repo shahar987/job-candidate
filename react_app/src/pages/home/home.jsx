@@ -1,50 +1,48 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
+import React,{useState, useEffect} from 'react';
 import Pagination from '@mui/material/Pagination';
-import CameraIcon from '@mui/icons-material/PhotoCamera';
-import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-import Cookies from 'js-cookie';
-import CandidateCard from '../../components/candidateCard/candidateCard';
-import { Navbar } from '../../components/navbar';
+import CandidateCard from '../../components/candidateCard';
+import Navbar from '../../components/navbar';
 import Loading from '../../components/loading';
+import useAuth from '../../hooks/auth';
 
+const LIMIT = 15
 
 const defaultTheme = createTheme();
 
-export default function Home() {
-      const [candidates, setCandidates] = React.useState([])
-      const [res, setRes] = React.useState({})
-      const [page, setPage] = React.useState(1)
+const Home = () => {
+      const [candidates, setCandidates] = useState([])
+      const [res, setRes] = useState({})
+      const [page, setPage] = useState(1)
+      const {logout } = useAuth();
 
       const handleChange = (event, value) => { 
         setPage(value); 
-        getCandidates({ page: value , limit: 30 });
+        getCandidates({ page: value , limit: LIMIT });
         window.scrollTo({ top: 0, behavior: 'smooth' })
       };
 
       const getCandidates = async(params) =>{
           try {
-              const token = Cookies.get('token')
               const response = await axios.get(`http://localhost:8080/api/candidates`,{
                   params:params,
-                  headers:{Authorization: `Bearer ${token}`}
+                  withCredentials: true
               });
               setCandidates(response.data['candidates']);
               setRes(response.data)
 
           } catch (error) {
               console.error(error);
+              if(error.response.status === 401) logout()
         }}
 
-      React.useEffect(() => {
-          getCandidates({ page: 1, limit: 30 });
+      useEffect(() => {
+          getCandidates({ page: 1, limit: LIMIT });
         },[]);
 
   return (
@@ -82,13 +80,14 @@ export default function Home() {
             <Loading/>
           }
           </Grid>
-          {candidates ?
-          null
-          :
+          {candidates.length ?
           <Pagination  count={res['totalPages']} color="primary" onChange={handleChange} page={page} sx={{ display: 'flex', justifyContent: 'center', pt: 4 }}/>
+          : null
           }
         </Container>
       </main>
     </ThemeProvider>
   );
 }
+
+export default Home;
