@@ -25,7 +25,7 @@ export default function SignUp() {
             email,
             username,
             password,
-          });
+          },{withCredentials:true});
       
           Cookies.set('token', response.data.token);
           navigate('/');

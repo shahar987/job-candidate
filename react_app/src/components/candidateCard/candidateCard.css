@@ -1,21 +1,3 @@
-.card{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 5px;
-    box-shadow: 1px 1px 10px #7d7c7c76;
-    height: 20rem;
-    width: 15vw;
-    margin: 20px;   
-}
-
-.card  *{
-    margin: 0;
-}
-
 .avatar{
     width: 10rem;
     height: 10rem;
@@ -46,16 +28,5 @@
     color: #444444;
 }
 
-button{
-    background-color: transparent;
-    border: 1px solid #7752FE;
-    color: #7752FE;
-    border-radius: 5px;
-    padding: 7px 15px;
-}
 
-button:hover{
-    background-color: #7752FE;
-    color: white;
-    cursor: pointer;
-}
+

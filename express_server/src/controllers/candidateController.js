@@ -16,6 +16,7 @@ exports.getCandidate = catchAsync(async (req, res, next) => {
 
 
 exports.getAllCandidates = catchAsync(async (req, res, next) => {
+    console.log()
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10; 
 

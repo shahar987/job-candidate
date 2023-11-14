@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import ProfileCard from '../../components/profileCard/profileCard';
 import Cookies from 'js-cookie';
+import { Navbar } from '../../components/navbar';
 
 
 const CandidateProfile = () => {
@@ -26,7 +27,8 @@ const CandidateProfile = () => {
         getCandidate()
     });
   return (
-    <div className="background">
+    <div >
+        <Navbar/>
         <div className='container'>
             {candidate ? <ProfileCard candidate={candidate}/>: null}
         </div>
