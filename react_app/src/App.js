@@ -10,11 +10,14 @@ import useAuth from './hooks/auth';
 const  App =() => {
   const {isLoggedIn} = useAuth();
 
+  const checkLogin = () =>{
+    return isLoggedIn
+  }
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="/" element={isLoggedIn ?<Home/> : <Navigate to='/signin'/>}/>
-          <Route path="/candidates/:id" element={isLoggedIn ? <CandidateProfile/> : <Navigate to='/signin'/>}/>
+          <Route path="/" element={checkLogin ?<Home/> : <Navigate to='/signin'/>}/>
+          <Route path="/candidates/:id" element={checkLogin ? <CandidateProfile/> : <Navigate to='/signin'/>}/>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           
