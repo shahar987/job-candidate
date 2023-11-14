@@ -5,6 +5,7 @@ import axios from 'axios';
 import ProfileCard from '../../components/profileCard/profileCard';
 import Cookies from 'js-cookie';
 import { Navbar } from '../../components/navbar';
+import Loading from '../../components/loading';
 
 
 const CandidateProfile = () => {
@@ -25,12 +26,12 @@ const CandidateProfile = () => {
             }
         }
         getCandidate()
-    });
+    },[]);
   return (
     <div >
         <Navbar/>
         <div className='container'>
-            {candidate ? <ProfileCard candidate={candidate}/>: null}
+            {candidate ? <ProfileCard candidate={candidate}/>: <Loading/>}
         </div>
     </div>
   )

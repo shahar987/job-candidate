@@ -13,6 +13,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import CandidateCard from '../../components/candidateCard/candidateCard';
 import { Navbar } from '../../components/navbar';
+import Loading from '../../components/loading';
 
 
 const defaultTheme = createTheme();
@@ -50,7 +51,6 @@ export default function Home() {
     <ThemeProvider theme={defaultTheme}>
       <Navbar/>
       <main>
-        {/* Hero unit */}
         <Box
           sx={{
             bgcolor: 'background.paper',
@@ -68,26 +68,27 @@ export default function Home() {
             >
               Candidates
             </Typography>
-
-
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-          {candidates.map(candidate => (
-            <Grid item key={candidate.id} xs={12} sm={6} md={4} >
-                <CandidateCard candidate={candidate} />
-            </Grid>
-          ))}
+          <Grid container spacing={4} >
+          {candidates.length ? 
+            candidates.map(candidate => (
+              <Grid item key={candidate.id} xs={12} sm={6} md={4} >
+                  <CandidateCard candidate={candidate} />
+              </Grid>
+            ))
+            :
+            <Loading/>
+          }
           </Grid>
+          {candidates ?
+          null
+          :
           <Pagination  count={res['totalPages']} color="primary" onChange={handleChange} page={page} sx={{ display: 'flex', justifyContent: 'center', pt: 4 }}/>
-
+          }
         </Container>
       </main>
-      {/* Footer */}
-      
-      {/* End footer */}
     </ThemeProvider>
   );
 }

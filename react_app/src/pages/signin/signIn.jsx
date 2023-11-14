@@ -20,6 +20,8 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
     const navigate = useNavigate()
+    const [loginError, setLoginError] = React.useState("")
+
     const signIn = async (username, password) => {
         try {
             const response = await axios.post('http://localhost:8080/api/auth/signin', {
@@ -31,6 +33,7 @@ export default function SignIn() {
         
         } catch (error) {
           console.error('Signin error:', error);
+          setLoginError(error.response.data['message'])
         }
     };
 
@@ -39,6 +42,7 @@ export default function SignIn() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         signIn(data.get('username'), data.get('password'));
+        
     };
 
   return (
@@ -80,6 +84,9 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
+            <Typography >
+            {loginError}
+          </Typography>
             <Button
               type="submit"
               fullWidth

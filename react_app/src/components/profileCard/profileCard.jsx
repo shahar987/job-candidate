@@ -4,7 +4,7 @@ import './profileCard.css';
 const ProfileCard = ({candidate}) => {
     
   return (
-    <div className='profileCard'>
+    <div>
         <div className="title">
             <img className='avatar' src={candidate.avatar} alt='avatar'/>
             <div className="title-info">

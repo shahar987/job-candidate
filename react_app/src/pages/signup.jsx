@@ -19,6 +19,8 @@ const defaultTheme = createTheme();
 
 export default function SignUp() {
     const navigate = useNavigate()
+    const [signUpError, setSignupError] = React.useState("") 
+
     const signUp = async (email, username, password) => {
         try {
           const response = await axios.post('http://localhost:8080/api/auth/signup', {
@@ -31,6 +33,7 @@ export default function SignUp() {
           navigate('/');
         } catch (error) {
           console.error('Signup error:', error);
+          setSignupError(error.response.data['message'])
         }
       };
   const handleSubmit = (event) => {
@@ -93,8 +96,10 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-
             </Grid>
+            <Typography >
+                {signUpError}
+            </Typography>
             <Button
               type="submit"
               fullWidth
